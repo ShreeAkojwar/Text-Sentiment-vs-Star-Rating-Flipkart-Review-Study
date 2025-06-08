@@ -13,9 +13,18 @@ df_full = pd.concat([df_train, df_test], ignore_index=True)
 print("\nOriginal columns in the dataset:")
 for col in df_full.columns:
     print(f"  - {col}")
+"""The f"..." is a formatted string literal (called an "f-string").
+It lets you insert variables directly into strings using curly braces {}."""
 
 # Calculate review length using the correct column name 'text'
 df_full['review_length'] = df_full['text'].apply(lambda x: len(str(x).split()))
+"""Part	Meaning
+df_full['text']	Accesses the review text column
+.apply(...)	Applies a function to each row in the text column
+lambda x: ...	Anonymous function (takes each review as x)
+str(x)	Ensures the input is a string (in case of None/NaN)
+.split()	Splits the text into words (by spaces)
+len(...)	Counts how many words are in the list """
 
 # Review type
 def review_type(length):
@@ -27,6 +36,11 @@ def review_type(length):
         return 'long'
 
 df_full['review_type'] = df_full['review_length'].apply(review_type)
+
+# 'rating' is the star rating (1 to 5) given directly by the user.
+# 'labels' are sentiment classes (0 = negative, 1 = neutral, 2 = positive) assigned by humans or a model.
+# While 'rating' reflects the user's chosen score, 'labels' reflect the tone of the review text.
+# They may not always match — for example, a user may give 4 stars but write a negative review.
 
 # Rating sentiment
 def map_rating_to_sentiment(rating):
@@ -57,6 +71,17 @@ for review_type, count in review_type_counts.items():
     percentage = (count / len(df_full)) * 100
     print(f"  - {review_type}: {count:,} reviews ({percentage:.1f}%)")
 
+"""Just prints a heading with a line break (\n) before it.
+ df_full['review_type'].value_counts()
+Counts how many times each category appears in the review_type column.
+Example output
+medium    18000  
+short     15000  
+long       7000
+Iterates over each review type and its count (e.g., 'short' with 15,000 reviews)
+Calculates the percentage share of that type.
+len(df_full) = total number of reviews."""
+
 # Print rating sentiment statistics
 print("\nRating Sentiment Distribution:")
 sentiment_counts = df_full['rating_sentiment'].value_counts()
@@ -69,6 +94,10 @@ print("\nAverage Rating by Sentiment:")
 for sentiment in ['negative', 'neutral', 'positive']:
     avg_rating = df_full[df_full['rating_sentiment'] == sentiment]['Rate'].mean()
     print(f"  - {sentiment}: {avg_rating:.1f}")
+""" This is filtering the DataFrame to only include rows where the rating_sentiment 
+(derived earlier from 1-5 stars) matches the current sentiment.
+Prints the sentiment and its average rating in a clean format, rounded to 1 decimal place.
+"""
 
 # Print some example reviews of each type
 print("\nExample reviews of each type:")
