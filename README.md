@@ -58,11 +58,3 @@ python convert_parquet_to_csv.py
 python sentiment_analysis.py
 ```
 
-## Analysis Results
-
-The sentiment analysis shows:
-- Positive reviews: 85.5%
-- Negative reviews: 13.1%
-- Neutral reviews: 1.4%
-
-Model achieves 86% accuracy in sentiment prediction, with particularly strong performance in identifying positive reviews (93% F1-score).
