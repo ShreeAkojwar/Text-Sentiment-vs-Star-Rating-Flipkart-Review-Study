@@ -1,0 +1,29 @@
+Final Model Performance Summary
+==================================================
+
+Individual Model Performance:
+
+Random Forest:
+RMSE: 1.6790
+MAE: 1.5355
+R2: -0.6029
+
+Gradient Boosting:
+RMSE: 1.6787
+MAE: 1.5353
+R2: -0.6025
+
+SVR:
+RMSE: 1.6279
+MAE: 1.4789
+R2: -0.5069
+
+ElasticNet:
+RMSE: 1.6947
+MAE: 1.5590
+R2: -0.6331
+
+Ensemble Model Performance:
+RMSE: 1.6704
+MAE: 1.5293
+R² Score: -0.5867

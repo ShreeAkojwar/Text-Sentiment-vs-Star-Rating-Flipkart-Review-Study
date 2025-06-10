@@ -1,60 +1,66 @@
-# Multi-Platform Customer Review Analysis for Flipkart
+# Flipkart Review Analysis
 
-This project analyzes customer reviews from Flipkart using machine learning and natural language processing techniques to perform sentiment analysis and extract insights.
+## Regression Analysis: Predicting Ratings from Aspect Sentiments
 
-## Project Components
+This project analyzes Flipkart product reviews by attempting to predict star ratings from aspect-based sentiment analysis. The analysis focuses on four key aspects: quality, cost, delivery, and flexibility.
 
-### Sentiment Analysis
-- `sentiment_analysis.py`: Main script for sentiment analysis using TextBlob and Random Forest
-- `convert_parquet_to_csv.py`: Script to convert Parquet files to CSV format
+### Key Features
+- Multiple advanced ML models (Random Forest, Gradient Boosting, SVR, ElasticNet)
+- SMOTE for handling imbalanced data
+- Polynomial feature engineering
+- Weighted ensemble approach
+- Comprehensive error analysis and visualization
 
-### Data Files
-- `train.parquet` & `test.parquet`: Original review data
-- `flipkart_reviews_full.csv`: Combined dataset from Parquet files
-- `flipkart_reviews_with_sentiment.csv`: Final dataset with sentiment analysis
-
-## Features
-
-- Text preprocessing and cleaning
-- Sentiment analysis using TextBlob
-- Machine learning model (Random Forest) for sentiment prediction
-- Feature engineering from review text
-- Hybrid approach combining rating-based and text-based sentiment
-- Review length analysis (short/medium/long)
-- Sentiment distribution analysis
-- Feature importance analysis
-
-## Results
-
-The sentiment analysis produces:
-- Review length categorization
-- Sentiment scores (negative/neutral/positive)
-- Model performance metrics
-- Feature importance rankings
-
-## Requirements
-
+### Requirements
 ```
 pandas
 numpy
-textblob
+matplotlib
+seaborn
 scikit-learn
+imbalanced-learn
 ```
 
-## How to Run
+### Project Structure
+```
+.
+├── README.md
+├── aspect_sentiment_analysis.py
+├── reression_analysis_predict_rating_from_aspect_sentiments.py
+├── processed_data/
+│   └── aspect_sentiment_vader.csv
+└── outputs/
+    ├── final_predictions.png
+    ├── final_error_distribution.png
+    ├── final_regression_results.csv
+    └── final_model_summary.txt
+```
 
-1. Install requirements:
+### Key Findings
+- Aspect sentiments alone are not strong predictors of overall ratings
+- Best performing model: SVR (Support Vector Regression)
+  - RMSE: 1.6279
+  - MAE: 1.4789
+- Weighted ensemble of all models:
+  - RMSE: 1.6704
+  - MAE: 1.5293
+
+### Usage
+1. Install dependencies:
 ```bash
-pip install pandas numpy textblob scikit-learn
+pip install -r requirements.txt
 ```
 
-2. Convert Parquet to CSV:
+2. Run aspect sentiment analysis:
 ```bash
-python convert_parquet_to_csv.py
+python aspect_sentiment_analysis.py
 ```
 
-3. Run sentiment analysis:
+3. Run regression analysis:
 ```bash
-python sentiment_analysis.py
+python reression_analysis_predict_rating_from_aspect_sentiments.py
 ```
+
+### Results
+The analysis reveals that aspect-based sentiments alone cannot reliably predict overall ratings, suggesting that users' overall ratings are influenced by factors beyond the analyzed aspects.
 

@@ -1,0 +1,14 @@
+Model Performance Summary
+==================================================
+
+Best performing model: RandomForestRegressor
+Best R² score: 0.0604
+
+Feature importance ranking:
+cost: 0.7230
+quality: 0.2736
+delivery: 0.0030
+cost_delivery: 0.0002
+quality_cost: 0.0001
+flexibility: 0.0000
+quality_delivery: 0.0000
