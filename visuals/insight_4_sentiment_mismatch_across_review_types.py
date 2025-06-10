@@ -7,22 +7,20 @@ sns.set(style="whitegrid")
 # Ensure df_full is defined (example: loading from a CSV file)
 try:
     # Load the Flipkart reviews dataset
-    df_full = pd.read_csv('../flipkart_reviews_with_sentiment.csv')  # Using the correct file name
+    df_full = pd.read_csv('flipkart_reviews_with_sentiment.csv')  # Using the correct file path
     print("Data loaded successfully.")
 except FileNotFoundError:
     raise Exception("The data file could not be found. Please check the file path.")
 
 # Check if required columns exist
-required_columns = {'review_type', 'sentiment_match'}
+required_columns = {'review_type', 'rating_sentiment', 'sentiment_code'}
 if not required_columns.issubset(df_full.columns):
     raise Exception(f"The DataFrame must contain the following columns: {required_columns}")
 print("Required columns are present.")
 
-# Ensure 'sentiment_match' is boolean
-if not pd.api.types.is_bool_dtype(df_full['sentiment_match']):
-    print(f"Column 'sentiment_match' dtype: {df_full['sentiment_match'].dtype}")
-    raise Exception("'sentiment_match' column must contain boolean values (True/False).")
-print("'sentiment_match' column is boolean.")
+# Create sentiment_match column (comparing rating_sentiment with text sentiment)
+df_full['sentiment_match'] = df_full['rating_sentiment'] == df_full['sentiment_code']
+print("Created sentiment_match column.")
 
 # Step 1: Group by review type and calculate mismatch rate
 try:
