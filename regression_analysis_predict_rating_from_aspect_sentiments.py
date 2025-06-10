@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.svm import SVR
 from imblearn.over_sampling import SMOTE
+import os
 
 # Set style for better visualizations
 plt.style.use('seaborn-v0_8')
@@ -98,13 +99,16 @@ print(f"RMSE: {ensemble_rmse:.4f}")
 print(f"MAE: {ensemble_mae:.4f}")
 print(f"R² Score: {ensemble_r2:.4f}")
 
+# Create output directory if it doesn't exist
+os.makedirs('outputs', exist_ok=True)
+
 # Save results
 results_df = pd.DataFrame({
     'Actual': y_test,
     'Predicted': ensemble_pred,
     'Error': y_test - ensemble_pred
 })
-results_df.to_csv('final_regression_results.csv', index=False)
+results_df.to_csv('outputs/regression_results.csv', index=False)
 
 # Plot actual vs predicted
 plt.figure(figsize=(10, 6))
@@ -112,26 +116,26 @@ plt.scatter(y_test, ensemble_pred, alpha=0.5)
 plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
 plt.xlabel("Actual Rating")
 plt.ylabel("Predicted Rating")
-plt.title("Final Model: Actual vs Predicted Ratings")
+plt.title("Aspect Sentiment vs Rating: Prediction Analysis")
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('final_predictions.png', dpi=300, bbox_inches='tight')
+plt.savefig('outputs/prediction_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Plot error distribution
 plt.figure(figsize=(10, 6))
 sns.histplot(results_df['Error'], bins=50, kde=True)
-plt.title('Final Model: Prediction Error Distribution')
-plt.xlabel('Prediction Error')
+plt.title('Prediction Error Distribution')
+plt.xlabel('Error (Predicted - Actual Rating)')
 plt.ylabel('Count')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('final_error_distribution.png', dpi=300, bbox_inches='tight')
+plt.savefig('outputs/error_distribution.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Save summary
-with open('final_model_summary.txt', 'w') as f:
-    f.write("Final Model Performance Summary\n")
+with open('outputs/model_summary.txt', 'w') as f:
+    f.write("Aspect Sentiment vs Rating Analysis Summary\n")
     f.write("=" * 50 + "\n\n")
     f.write("Individual Model Performance:\n")
     for name, metrics in results.items():
@@ -143,3 +147,20 @@ with open('final_model_summary.txt', 'w') as f:
     f.write(f"RMSE: {ensemble_rmse:.4f}\n")
     f.write(f"MAE: {ensemble_mae:.4f}\n")
     f.write(f"R² Score: {ensemble_r2:.4f}\n")
+
+# Save feature importance analysis
+if hasattr(models['Random Forest'], 'feature_importances_'):
+    importance = models['Random Forest'].feature_importances_
+    importance_df = pd.DataFrame({
+        'Feature': feature_names,
+        'Importance': importance
+    }).sort_values('Importance', ascending=False)
+    
+    plt.figure(figsize=(12, 6))
+    sns.barplot(data=importance_df.head(10), x='Importance', y='Feature')
+    plt.title('Top 10 Most Important Features')
+    plt.xlabel('Importance Score')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('outputs/feature_importance.png', dpi=300, bbox_inches='tight')
+    plt.close()
