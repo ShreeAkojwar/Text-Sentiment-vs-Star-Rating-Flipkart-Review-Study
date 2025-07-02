@@ -44,36 +44,36 @@ try:
     # Calculate sentiment match
     df_full['sentiment_match'] = df_full['rating_sentiment'] == df_full['label_sentiment']
 
-    # Step 1: Group by numeric star rating (Rate), calculate mismatch %
-    mismatch_by_rating = df_full.groupby('Rate')['sentiment_match'].apply(lambda x: 100 * (~x).mean())
+# Step 1: Group by numeric star rating (Rate), calculate mismatch %
+mismatch_by_rating = df_full.groupby('Rate')['sentiment_match'].apply(lambda x: 100 * (~x).mean())
     print("\nMismatch rates by star rating:")
     print(mismatch_by_rating)
 
-    # Step 2: Plot
+# Step 2: Plot
     plt.figure(figsize=(10, 6))
-    ax = sns.barplot(x=mismatch_by_rating.index, y=mismatch_by_rating.values, palette='coolwarm')
+ax = sns.barplot(x=mismatch_by_rating.index, y=mismatch_by_rating.values, palette='coolwarm')
 
-    # Annotate bars
-    for i, val in enumerate(mismatch_by_rating.values):
-        ax.text(i, val + 0.5, f'{val:.1f}%', ha='center', fontsize=11)
+# Annotate bars
+for i, val in enumerate(mismatch_by_rating.values):
+    ax.text(i, val + 0.5, f'{val:.1f}%', ha='center', fontsize=11)
 
     # Labels and styling
     plt.title('Sentiment Mismatch Rate by Star Rating', fontsize=14, pad=20)
-    plt.xlabel('Star Rating')
-    plt.ylabel('Mismatch Rate (%)')
-    plt.ylim(0, mismatch_by_rating.max() + 5)
+plt.xlabel('Star Rating')
+plt.ylabel('Mismatch Rate (%)')
+plt.ylim(0, mismatch_by_rating.max() + 5)
     
     # Add grid for better readability
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
     # Adjust layout
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_7_Mismatch_Rate_by_Star_Rating.png', bbox_inches='tight', dpi=300)
     print("\nPlot saved as 'Figure_7_Mismatch_Rate_by_Star_Rating.png'")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

@@ -103,7 +103,7 @@ try:
     print(f"Category with highest mismatch rate: {category_stats.iloc[-1]['category']} ({category_stats.iloc[-1]['mismatch_rate']:.1f}%)")
     print(f"Category with lowest mismatch rate: {category_stats.iloc[0]['category']} ({category_stats.iloc[0]['mismatch_rate']:.1f}%)")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

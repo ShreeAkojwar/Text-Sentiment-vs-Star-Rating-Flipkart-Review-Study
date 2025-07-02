@@ -26,14 +26,14 @@ try:
     # Map sentiment codes to labels for text sentiment
     sentiment_map = {1: 'positive', 0: 'neutral', -1: 'negative'}
     df_full['label_sentiment'] = df_full['sentiment_code'].map(sentiment_map)
-    
-    # Step 1: Group data by Rate and label_sentiment
-    rating_sentiment_group = df_full.groupby(['Rate', 'label_sentiment']).size().reset_index(name='count')
+
+# Step 1: Group data by Rate and label_sentiment
+rating_sentiment_group = df_full.groupby(['Rate', 'label_sentiment']).size().reset_index(name='count')
     
     print("\nDistribution of sentiments across ratings:")
     print(rating_sentiment_group.pivot(index='Rate', columns='label_sentiment', values='count').fillna(0))
 
-    # Step 2: Plot
+# Step 2: Plot
     plt.figure(figsize=(12, 7))
     ax = sns.barplot(data=rating_sentiment_group, 
                      x='Rate', 
@@ -43,11 +43,11 @@ try:
                      palette='Set2')
 
     # Add value labels on the bars
-    for p in ax.patches:
-        height = p.get_height()
-        if height > 0:
+for p in ax.patches:
+    height = p.get_height()
+    if height > 0:
             ax.annotate(f'{int(height):,}', 
-                        (p.get_x() + p.get_width() / 2., height), 
+                    (p.get_x() + p.get_width() / 2., height), 
                         ha='center', va='bottom', 
                         fontsize=8)
 
@@ -61,7 +61,7 @@ try:
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
     # Adjust layout to prevent label cutoff
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_10_Sentiment_Distribution_by_Rating.png', 
@@ -84,7 +84,7 @@ try:
                 percentage = (count[0] / five_star_total) * 100
                 print(f"- {sentiment.capitalize()}: {percentage:.1f}%")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

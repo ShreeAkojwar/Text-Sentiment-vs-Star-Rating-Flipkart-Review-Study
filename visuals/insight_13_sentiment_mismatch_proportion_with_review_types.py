@@ -34,11 +34,11 @@ try:
     
     # Calculate sentiment match
     df_full['sentiment_match'] = df_full['sentiment'] == df_full['rating_sentiment']
-    
-    # Filter mismatched reviews
+
+# Filter mismatched reviews
     mismatched_df = df_full[~df_full['sentiment_match']]
-    
-    # Count mismatches by review type
+
+# Count mismatches by review type
     mismatch_by_type = mismatched_df['review_type'].value_counts().reindex(['short', 'medium', 'long'])
     mismatch_percentages = (mismatch_by_type / mismatch_by_type.sum() * 100).round(6)
     
@@ -48,10 +48,10 @@ try:
     for review_type, count in mismatch_by_type.items():
         percentage = mismatch_percentages[review_type]
         print(f"{review_type}: {count:,} reviews ({percentage:.6f}%)")
-    
-    # Plot as pie chart
+
+# Plot as pie chart
     plt.figure(figsize=(10, 8))
-    colors = sns.color_palette('pastel')
+colors = sns.color_palette('pastel')
     
     # Create pie chart with exact percentages (6 decimal places)
     patches, texts, autotexts = plt.pie(mismatch_percentages, 
@@ -78,7 +78,7 @@ try:
               bbox_to_anchor=(1, 0, 0.5, 1))
     
     # Adjust layout to prevent label cutoff
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_13_Sentiment_Mismatch_Proportion.png', 

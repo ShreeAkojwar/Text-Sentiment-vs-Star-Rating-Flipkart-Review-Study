@@ -43,14 +43,14 @@ try:
     # Calculate sentiment match
     df_full['sentiment_match'] = df_full['rating_sentiment'] == df_full['label_sentiment']
 
-    # Step 1: Group by Rate and calculate match percentage
+# Step 1: Group by Rate and calculate match percentage
     match_rate_by_rating = df_full.groupby('Rate')['sentiment_match'].agg(['mean', 'count']).reset_index()
     match_rate_by_rating['match_percentage'] = match_rate_by_rating['mean'] * 100
     
     print("\nSentiment match rates by star rating:")
     print(match_rate_by_rating[['Rate', 'match_percentage', 'count']].round(6))
 
-    # Step 2: Plot
+# Step 2: Plot
     plt.figure(figsize=(12, 7))
     
     # Create bar plot
@@ -82,7 +82,7 @@ try:
     plt.ylim(0, max(match_rate_by_rating['match_percentage']) * 1.2)  # Add 20% padding
     
     # Adjust layout to prevent label cutoff
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_11_Sentiment_Match_Rate_by_Rating.png', 
@@ -101,7 +101,7 @@ try:
           f"(Match rate: {match_rate_by_rating.iloc[min_idx]['match_percentage']:.6f}%, "
           f"Count: {int(match_rate_by_rating.iloc[min_idx]['count']):,})")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

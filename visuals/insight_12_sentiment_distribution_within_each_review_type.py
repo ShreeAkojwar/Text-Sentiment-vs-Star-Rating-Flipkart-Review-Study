@@ -31,30 +31,30 @@ try:
     print(df_full['review_type'].value_counts().to_string())
     
     # Set the style
-    sns.set(style="whitegrid")
+sns.set(style="whitegrid")
     plt.figure(figsize=(12, 7))
-    
-    # Group and count sentiment within each review type
+
+# Group and count sentiment within each review type
     sentiment_by_length = df_full.groupby(['review_type', 'sentiment']).size().reset_index(name='count')
     
     # Calculate percentages within each review type
     total_by_type = sentiment_by_length.groupby('review_type')['count'].sum().reset_index()
     sentiment_by_length = sentiment_by_length.merge(total_by_type, on='review_type', suffixes=('', '_total'))
     sentiment_by_length['percentage'] = (sentiment_by_length['count'] / sentiment_by_length['count_total'] * 100).round(6)
-    
-    # Plot
+
+# Plot
     ax = sns.barplot(data=sentiment_by_length, 
                      x='review_type', 
                      y='count', 
                      hue='sentiment',
                      hue_order=['positive', 'neutral', 'negative'], 
                      order=['short', 'medium', 'long'],
-                     palette='Set2')
-    
+                 palette='Set2')
+
     # Add value annotations with both count and percentage
-    for p in ax.patches:
-        height = p.get_height()
-        if height > 0:
+for p in ax.patches:
+    height = p.get_height()
+    if height > 0:
             review_type = p.get_x() + p.get_width() / 2
             sentiment_idx = int(p.get_x() / p.get_width())
             review_type_name = ['short', 'medium', 'long'][int(review_type)]
@@ -65,17 +65,17 @@ try:
             ]['percentage'].values[0]
             
             ax.annotate(f'{int(height):,}\n({percentage:.6f}%)', 
-                        (p.get_x() + p.get_width() / 2., height),
+                    (p.get_x() + p.get_width() / 2., height), 
                         ha='center', va='bottom', fontsize=8)
-    
-    # Customize
+
+# Customize
     plt.title('Sentiment Distribution Across Review Lengths', fontsize=14, pad=20)
     plt.xlabel('Review Type', fontsize=12)
     plt.ylabel('Number of Reviews', fontsize=12)
     plt.legend(title='Sentiment', title_fontsize=10, fontsize=9)
     
     # Adjust layout
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_12_Sentiment_Distribution_by_Review_Length.png', 

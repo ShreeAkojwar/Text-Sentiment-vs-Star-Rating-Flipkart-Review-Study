@@ -40,7 +40,7 @@ try:
     
     # Calculate rating sentiment
     df_full['rating_sentiment'] = df_full['Rate'].apply(map_rating_to_sentiment)
-    
+
     # Print value counts to verify
     print("\nRating Sentiment Distribution:")
     print(df_full['rating_sentiment'].value_counts())
@@ -50,7 +50,7 @@ try:
     # Step 1: Get value counts with percentages
     label_counts = df_full['label_sentiment'].value_counts(normalize=True).reindex(['positive', 'neutral', 'negative'])
     rating_counts = df_full['rating_sentiment'].value_counts(normalize=True).reindex(['positive', 'neutral', 'negative'])
-    
+
     # Step 2: Combine into a single DataFrame
     stacked_df = pd.DataFrame({
         'Text Sentiment': label_counts * 100,  # Convert to percentages
@@ -64,20 +64,20 @@ try:
     # Add percentage labels on the bars
     for c in ax.containers:
         ax.bar_label(c, fmt='%.1f%%', label_type='center')
-    
+
     # Add labels and customize
     plt.title('Proportion of Sentiment: Text Analysis vs Rating', pad=20)
     plt.xlabel('Sentiment Source')
     plt.ylabel('Proportion of Reviews (%)')
     plt.legend(title='Sentiment Category', bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.grid(axis='y', linestyle='--', alpha=0.7)
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_5_Sentiment_Comparison.png', bbox_inches='tight', dpi=300)
     print("\nPlot saved as 'Figure_5_Sentiment_Comparison.png'")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

@@ -44,33 +44,33 @@ try:
     # Calculate sentiment match
     df_full['sentiment_match'] = df_full['rating_sentiment'] == df_full['label_sentiment']
 
-    # Step 1: Filter mismatched reviews
+# Step 1: Filter mismatched reviews
     mismatched_texts = df_full[~df_full['sentiment_match']]['text'].dropna().astype(str)
     print(f"\nAnalyzing {len(mismatched_texts)} mismatched reviews.")
 
-    # Step 2: Tokenize and clean text
-    words = []
-    for review in mismatched_texts:
+# Step 2: Tokenize and clean text
+words = []
+for review in mismatched_texts:
         # Remove punctuation, digits, and special characters, lowercase everything
-        review = re.sub(r'[^a-zA-Z\s]', '', review).lower()
-        words.extend(review.split())
+    review = re.sub(r'[^a-zA-Z\s]', '', review).lower()
+    words.extend(review.split())
 
     # Enhanced stopwords list
-    stopwords = set([
-        'the', 'this', 'and', 'was', 'with', 'for', 'not', 'that', 'have', 'you',
+stopwords = set([
+    'the', 'this', 'and', 'was', 'with', 'for', 'not', 'that', 'have', 'you',
         'but', 'its', 'are', 'very', 'too', 'had', 'been', 'from', 'they', 'all', 'my',
         'can', 'will', 'just', 'any', 'has', 'more', 'now', 'than', 'then', 'who',
         'what', 'when', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more',
         'most', 'other', 'some', 'such', 'get', 'got', 'getting', 'use', 'using'
-    ])
+])
 
     # Filter words and get counts
-    filtered_words = [w for w in words if w not in stopwords and len(w) > 2]
+filtered_words = [w for w in words if w not in stopwords and len(w) > 2]
     word_counts = Counter(filtered_words)
-    
+
     # Get top 15 words
     top_words = word_counts.most_common(15)
-    words, counts = zip(*top_words)
+words, counts = zip(*top_words)
 
     print("\nTop 15 most frequent words in mismatched reviews:")
     for word, count in zip(words, counts):
@@ -99,14 +99,14 @@ try:
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
     # Adjust layout to prevent label cutoff
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_8_Top_Words_in_Mismatched_Reviews.png', 
                 bbox_inches='tight', dpi=300)
     print("\nPlot saved as 'Figure_8_Top_Words_in_Mismatched_Reviews.png'")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")

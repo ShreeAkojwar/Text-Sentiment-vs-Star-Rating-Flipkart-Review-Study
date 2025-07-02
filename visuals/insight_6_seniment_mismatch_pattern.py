@@ -44,48 +44,48 @@ try:
     
     # Calculate sentiment match
     df_full['sentiment_match'] = df_full['rating_sentiment'] == df_full['label_sentiment']
-    
-    # Filter only mismatched reviews
+
+# Filter only mismatched reviews
     mismatch_df = df_full[~df_full['sentiment_match']]
     print(f"\nFound {len(mismatch_df)} mismatched reviews.")
 
-    # Count combinations of rating_sentiment → label_sentiment
-    pattern_counts = mismatch_df.groupby(['rating_sentiment', 'label_sentiment']).size().reset_index(name='count')
+# Count combinations of rating_sentiment → label_sentiment
+pattern_counts = mismatch_df.groupby(['rating_sentiment', 'label_sentiment']).size().reset_index(name='count')
     print("\nMismatch patterns:")
     print(pattern_counts)
 
-    # Plot grouped bar chart
+# Plot grouped bar chart
     plt.figure(figsize=(12, 7))
-    ax = sns.barplot(data=pattern_counts, x='rating_sentiment', y='count', hue='label_sentiment',
-                     order=['positive', 'neutral', 'negative'],
-                     hue_order=['positive', 'neutral', 'negative'],
-                     palette='Set2')
+ax = sns.barplot(data=pattern_counts, x='rating_sentiment', y='count', hue='label_sentiment',
+                 order=['positive', 'neutral', 'negative'],
+                 hue_order=['positive', 'neutral', 'negative'],
+                 palette='Set2')
 
-    # Annotate bars
-    for p in ax.patches:
-        height = p.get_height()
-        if height > 0:
+# Annotate bars
+for p in ax.patches:
+    height = p.get_height()
+    if height > 0:
             ax.annotate(f'{int(height):,}', 
-                        (p.get_x() + p.get_width() / 2., height), 
-                        ha='center', va='bottom', fontsize=10)
+                    (p.get_x() + p.get_width() / 2., height), 
+                    ha='center', va='bottom', fontsize=10)
 
-    # Labels and legend
+# Labels and legend
     plt.title('Sentiment Mismatch Patterns: Rating vs. Text Analysis', fontsize=14, pad=20)
     plt.xlabel('Rating-Based Sentiment')
-    plt.ylabel('Number of Mismatched Reviews')
+plt.ylabel('Number of Mismatched Reviews')
     plt.legend(title='Text-Based Sentiment', bbox_to_anchor=(1.05, 1))
     
     # Add grid for better readability
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
     # Adjust layout to prevent label cutoff
-    plt.tight_layout()
+plt.tight_layout()
     
     # Save the plot
     plt.savefig('visual_images/Figure_6_Sentiment_Mismatch_Patterns.png', bbox_inches='tight', dpi=300)
     print("\nPlot saved as 'Figure_6_Sentiment_Mismatch_Patterns.png'")
     
-    plt.show()
+plt.show()
 
 except FileNotFoundError:
     print("Error: The data file could not be found. Please check if 'flipkart_reviews_with_sentiment.csv' exists in the current directory.")
